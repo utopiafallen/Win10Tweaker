@@ -26,7 +26,7 @@ namespace Win10Tweaker
         private static string CORTANA_KEY_NAME = "Windows Search";
         private static string CORTANA_STATE_VALUE_NAME = "AllowCortana";
 
-        private static readonly RegistryKey BING_SEARCH_PARENT_KEY = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Search");
+        private static readonly RegistryKey BING_SEARCH_PARENT_KEY = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Search", true);
         private static string[] BING_SEARCH_VALUE_NAMES = { "BingSearchEnabled", "CortanaConsent" };
         private static string BING_SEARCH_CORTANA_VALUE_NAME = "DisableWebSearch";
 
@@ -84,7 +84,7 @@ namespace Win10Tweaker
                 BING_SEARCH_PARENT_KEY.SetValue(valueName, IntFromBool(enabled), RegistryValueKind.DWord);
             }
 
-            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME);
+            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME, true);
             if (cortanaParentKey == null)
                 return;
 
@@ -108,6 +108,8 @@ namespace Win10Tweaker
         {
             CortanaSetEnabled(CortanaStateComboBox.SelectedIndex == 1);
             BingSearchSetEnabled(BingSearchStateComboBox.SelectedIndex == 1);
+
+            MessageBox.Show("Tweaks applied successfully! Please restart to see effects.");
         }
     }
 }

@@ -29,6 +29,10 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Button Content="Restore Defaults" Grid.Column="0" Margin="5" Padding="5" Click="RestoreDefaultsButton_Click"/>
             <Button Content="Apply" Grid.Column="1" Margin="5" Padding="5" Click="ApplyButton_Click"/>
         </Grid>
