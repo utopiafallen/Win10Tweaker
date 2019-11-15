@@ -1,2 +1,8 @@
 # Win10Tweaker
-Windows 10 Tweaking Utility
+
+
+Graphical app for adjusting Windows 10 settings that otherwise aren't exposed by Windows. I was getting annoyed at having to look these settings up every time I wanted to adjust them so here we are.
+
+Currently supported settings:
+* Disable/Enable Cortana
+* Disable/Enable Bing/Web Start Menu Search
