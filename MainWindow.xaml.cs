@@ -22,6 +22,14 @@ namespace Win10Tweaker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly RegistryKey CORTANA_PARENT_KEY = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Policies").OpenSubKey("Microsoft").OpenSubKey("Windows");
+        private static string CORTANA_KEY_NAME = "Windows Search";
+        private static string CORTANA_STATE_VALUE_NAME = "AllowCortana";
+
+        private static readonly RegistryKey BING_SEARCH_PARENT_KEY = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Search");
+        private static string[] BING_SEARCH_VALUE_NAMES = { "BingSearchEnabled", "CortanaConsent" };
+        private static string BING_SEARCH_CORTANA_VALUE_NAME = "DisableWebSearch";
+
         private static int IntFromBool(bool b)
         {
             return b ? 1 : 0;
@@ -29,33 +37,58 @@ namespace Win10Tweaker
 
         private static bool CortanaIsEnabled()
         {
-            RegistryKey windowsKey = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Policies").OpenSubKey("Microsoft").OpenSubKey("Windows");
-
-            RegistryKey windowsSearchKey = windowsKey.OpenSubKey("Windows Search");
-            if (windowsSearchKey == null)
+            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME);
+            if (cortanaParentKey == null)
                 return true;
 
-            var allowCortana = windowsSearchKey.GetValue("AllowCortana");
+            var allowCortana = cortanaParentKey.GetValue(CORTANA_STATE_VALUE_NAME);
             if (allowCortana == null)
                 return true;
 
             return (int)allowCortana == 1;
         }
 
+        private static void CortanaSetEnabled(bool enabled)
+        {
+            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME, true);
+            if (cortanaParentKey == null)
+                cortanaParentKey = CORTANA_PARENT_KEY.CreateSubKey(CORTANA_KEY_NAME);
+
+            cortanaParentKey.SetValue(CORTANA_STATE_VALUE_NAME, IntFromBool(enabled), RegistryValueKind.DWord);
+        }
+
         private static bool BingSearchIsEnabled()
         {
-            RegistryKey searchKey = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("Search");
+            foreach (string valueName in BING_SEARCH_VALUE_NAMES)
+            {
+                var value = BING_SEARCH_PARENT_KEY.GetValue(valueName);
+                if (value == null || (int)value == 1)
+                    return true;
+            }
 
-            var bingSearchEnabled = searchKey.GetValue("BingSearchEnabled");
-            var cortanaConsent = searchKey.GetValue("CortanaConsent");
-
-            if (bingSearchEnabled == null || (int)bingSearchEnabled == 1)
+            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME);
+            if (cortanaParentKey == null)
                 return true;
 
-            if (cortanaConsent == null || (int)cortanaConsent == 1)
+            var disableWebSearch = cortanaParentKey.GetValue(BING_SEARCH_CORTANA_VALUE_NAME);
+            if (disableWebSearch == null || (int)disableWebSearch == 0)
                 return true;
 
             return false;
+        }
+
+        private static void BingSearchSetEnabled(bool enabled)
+        {
+            foreach (string valueName in BING_SEARCH_VALUE_NAMES)
+            {
+                BING_SEARCH_PARENT_KEY.SetValue(valueName, IntFromBool(enabled), RegistryValueKind.DWord);
+            }
+
+            RegistryKey cortanaParentKey = CORTANA_PARENT_KEY.OpenSubKey(CORTANA_KEY_NAME);
+            if (cortanaParentKey == null)
+                return;
+
+            cortanaParentKey.SetValue(BING_SEARCH_CORTANA_VALUE_NAME, IntFromBool(!enabled), RegistryValueKind.DWord);
         }
 
         public MainWindow()
@@ -63,6 +96,18 @@ namespace Win10Tweaker
             InitializeComponent();
             CortanaStateComboBox.SelectedIndex = IntFromBool(CortanaIsEnabled());
             BingSearchStateComboBox.SelectedIndex = IntFromBool(BingSearchIsEnabled());
+        }
+
+        private void RestoreDefaultsButton_Click(object sender, RoutedEventArgs e)
+        {
+            CortanaStateComboBox.SelectedIndex = 1;
+            BingSearchStateComboBox.SelectedIndex = 1;
+        }
+
+        private void ApplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            CortanaSetEnabled(CortanaStateComboBox.SelectedIndex == 1);
+            BingSearchSetEnabled(BingSearchStateComboBox.SelectedIndex == 1);
         }
     }
 }

@@ -29,8 +29,8 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Restore Defaults" Grid.Column="0" Margin="5" Padding="5"/>
-            <Button Content="Apply" Grid.Column="1" Margin="5" Padding="5"/>
+            <Button Content="Restore Defaults" Grid.Column="0" Margin="5" Padding="5" Click="RestoreDefaultsButton_Click"/>
+            <Button Content="Apply" Grid.Column="1" Margin="5" Padding="5" Click="ApplyButton_Click"/>
         </Grid>
 
         <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="0,1,0,0" Padding="10,5,10,5">
