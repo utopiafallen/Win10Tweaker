@@ -40,9 +40,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Cortana" Grid.Column="0"/>
-                <ComboBox Name="CortanaStateComboBox" Grid.Column="1" SelectedIndex="0">
-                    <ComboBoxItem Content="Enabled"/>
+                <ComboBox Name="CortanaStateComboBox" Grid.Column="1" SelectedIndex="1">
                     <ComboBoxItem Content="Disabled"/>
+                    <ComboBoxItem Content="Enabled"/>
                 </ComboBox>
             </Grid>
         </Border>
@@ -54,9 +54,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Bing Search in Start Menu" Grid.Column="0"/>
-                <ComboBox Name="BingSearchStateComboBox" Grid.Column="1" SelectedIndex="0">
-                    <ComboBoxItem Content="Enabled"/>
+                <ComboBox Name="BingSearchStateComboBox" Grid.Column="1" SelectedIndex="1">
                     <ComboBoxItem Content="Disabled"/>
+                    <ComboBoxItem Content="Enabled"/>
                 </ComboBox>
             </Grid>
         </Border>
