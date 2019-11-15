@@ -6,3 +6,5 @@ Graphical app for adjusting Windows 10 settings that otherwise aren't exposed by
 Currently supported settings:
 * Disable/Enable Cortana
 * Disable/Enable Bing/Web Start Menu Search
+
+[Download Latest](https://github.com/utopiafallen/Win10Tweaker/releases/tag/v0.0.1)
