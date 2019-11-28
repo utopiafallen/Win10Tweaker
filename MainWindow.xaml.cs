@@ -22,7 +22,7 @@ namespace Win10Tweaker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly RegistryKey CORTANA_PARENT_KEY = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Policies").OpenSubKey("Microsoft").OpenSubKey("Windows");
+        private static readonly RegistryKey CORTANA_PARENT_KEY = Registry.LocalMachine.OpenSubKey("SOFTWARE").OpenSubKey("Policies").OpenSubKey("Microsoft").OpenSubKey("Windows", true);
         private static string CORTANA_KEY_NAME = "Windows Search";
         private static string CORTANA_STATE_VALUE_NAME = "AllowCortana";
 
